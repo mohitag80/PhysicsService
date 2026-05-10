@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM maven:3.6.3-jdk-11 AS builder
+FROM maven:3.8.6-openjdk-11 AS builder
 
 WORKDIR /app
 
@@ -9,8 +9,8 @@ RUN mvn dependency:go-offline -B
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Stage 2: Runtime - using older JDK image with known CVEs
-FROM openjdk:11.0.11-jre-slim-buster
+# Stage 2: Runtime - older JDK on Ubuntu Jammy (carries known CVEs)
+FROM eclipse-temurin:11-jre-jammy
 
 LABEL maintainer="exam-platform@example.com"
 LABEL service="physics-service"
