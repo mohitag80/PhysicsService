@@ -1,0 +1,198 @@
+{
+    "bom-ref": "application:online-exam-app:1.0.0",
+    "bomFormat": "ConcertDef",
+    "specVersion": "2.0.0",
+    "criticality": 3,
+    "data-sensitivity": 3,
+    "revenue": 0.0,
+    "metadata": {
+        "timestamp": "2026-05-10T00:00:00Z",
+        "type": "application",
+        "application-name": "OnlineExamApp",
+        "application-version": "1.0.0",
+        "description": "Online examination platform for Grade 9-12 students covering Physics, Chemistry, Maths, and English. Heterogeneous microservices architecture."
+    },
+    "business": {
+        "name": "ExamPlatform",
+        "unit": {
+            "name": "Education Technology",
+            "email": "admin@onlineexamapp.com",
+            "phone": ""
+        },
+        "properties": []
+    },
+    "components": [
+        {
+            "bom-ref": "component:physics-service",
+            "type": "component",
+            "name": "physics-service",
+            "components": [
+                {
+                    "bom-ref": "image:physics-service",
+                    "type": "image",
+                    "name": "ghcr.io/mohitag80/physics-service:1.0.0"
+                },
+                {
+                    "bom-ref": "code:PhysicsService",
+                    "type": "code",
+                    "name": "PhysicsService",
+                    "purl": "https://github.com/mohitag80/PhysicsService",
+                    "branch": "main"
+                }
+            ]
+        },
+        {
+            "bom-ref": "component:maths-service",
+            "type": "component",
+            "name": "maths-service",
+            "components": [
+                {
+                    "bom-ref": "image:maths-service",
+                    "type": "image",
+                    "name": "ghcr.io/mohitag80/maths-service:1.0.0"
+                },
+                {
+                    "bom-ref": "code:MathsService",
+                    "type": "code",
+                    "name": "MathsService",
+                    "purl": "https://github.com/mohitag80/MathsService",
+                    "branch": "main"
+                }
+            ]
+        },
+        {
+            "bom-ref": "component:chem-service",
+            "type": "component",
+            "name": "chem-service",
+            "components": [
+                {
+                    "bom-ref": "image:chem-service",
+                    "type": "image",
+                    "name": "ghcr.io/mohitag80/chem-service:1.0.0"
+                },
+                {
+                    "bom-ref": "code:ChemService",
+                    "type": "code",
+                    "name": "ChemService",
+                    "purl": "https://github.com/mohitag80/ChemService",
+                    "branch": "main"
+                }
+            ]
+        },
+        {
+            "bom-ref": "component:english-service",
+            "type": "component",
+            "name": "english-service",
+            "components": [
+                {
+                    "bom-ref": "image:english-service",
+                    "type": "image",
+                    "name": "ghcr.io/mohitag80/english-service:1.0.0"
+                },
+                {
+                    "bom-ref": "code:EnglishService",
+                    "type": "code",
+                    "name": "EnglishService",
+                    "purl": "https://github.com/mohitag80/EnglishService",
+                    "branch": "main"
+                }
+            ]
+        }
+    ],
+    "services": [
+        {
+            "bom-ref": "appapi:physics-api",
+            "name": "physics-api",
+            "endpoints": [
+                "/api/physics/questions/grade/{grade}/top/{n}",
+                "/api/physics/questions/topic/{topic}/count/{n}",
+                "/api/physics/questions/complexity/{complexity}/count/{n}",
+                "/api/physics/questions/grade/{grade}/topic/{topic}/count/{n}",
+                "/api/physics/topics",
+                "/api/physics/health"
+            ],
+            "network-exposure": "public",
+            "properties": []
+        },
+        {
+            "bom-ref": "appapi:maths-api",
+            "name": "maths-api",
+            "endpoints": [
+                "/api/maths/questions/grade/{grade}/top/{n}",
+                "/api/maths/questions/topic/{topic}/count/{n}",
+                "/api/maths/questions/complexity/{complexity}/count/{n}",
+                "/api/maths/questions/grade/{grade}/topic/{topic}/count/{n}",
+                "/api/maths/topics",
+                "/api/maths/stats",
+                "/health"
+            ],
+            "network-exposure": "public",
+            "properties": []
+        },
+        {
+            "bom-ref": "appapi:chem-api",
+            "name": "chem-api",
+            "endpoints": [
+                "/api/chem/questions/grade/{grade}/top/{n}",
+                "/api/chem/questions/topic/{topic}/count/{n}",
+                "/api/chem/questions/complexity/{complexity}/count/{n}",
+                "/api/chem/topics",
+                "/health"
+            ],
+            "network-exposure": "public",
+            "properties": []
+        },
+        {
+            "bom-ref": "appapi:english-api",
+            "name": "english-api",
+            "endpoints": [
+                "/api/english/questions/grade/{grade}/top/{n}/",
+                "/api/english/questions/topic/{topic}/count/{n}/",
+                "/api/english/questions/complexity/{complexity}/count/{n}/",
+                "/api/english/questions/grade/{grade}/topic/{topic}/count/{n}/",
+                "/api/english/topics/",
+                "/api/english/stats/",
+                "/api/english/health/"
+            ],
+            "network-exposure": "public",
+            "properties": []
+        }
+    ],
+    "dependencies": [
+        {
+            "ref": "image:physics-service",
+            "dependsOn": [
+                "appapi:physics-api"
+            ]
+        },
+        {
+            "ref": "image:maths-service",
+            "dependsOn": [
+                "appapi:maths-api"
+            ]
+        },
+        {
+            "ref": "image:chem-service",
+            "dependsOn": [
+                "appapi:chem-api"
+            ]
+        },
+        {
+            "ref": "image:english-service",
+            "dependsOn": [
+                "appapi:english-api"
+            ]
+        }
+    ],
+    "properties": [
+        {
+            "name": "registry",
+            "value": "ghcr.io/mohitag80"
+        },
+        {
+            "name": "github-org",
+            "value": "https://github.com/mohitag80"
+        }
+    ],
+    "tags": ["education", "exam-platform", "microservices", "grade-9-12", "online-exam"]
+}
