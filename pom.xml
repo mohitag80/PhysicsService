@@ -21,6 +21,11 @@
     <properties>
         <java.version>11</java.version>
         <!-- Log4j managed by Spring Boot 2.7.18 at 2.17.2 — CVE-2021-44228 / CVE-2021-45046 fixed -->
+        <!-- Override Spring Framework to latest 5.3.x patch; fixes CVE-2024-22259, CVE-2024-22262, CVE-2024-38828 -->
+        <!-- NOTE: CVEs fixed only in Spring Framework 6.x (CVE-2024-38816, CVE-2024-38819, CVE-2024-38820) require Java 17 + Spring Boot 3.x -->
+        <spring-framework.version>5.3.42</spring-framework.version>
+        <!-- Override SnakeYAML to 2.0; fixes CVE-2022-1471 (Spring Boot 2.7.18 provides 1.30) -->
+        <snakeyaml.version>2.0</snakeyaml.version>
     </properties>
 
     <dependencies>
@@ -95,7 +100,7 @@
             <version>1.7.0</version>
         </dependency>
 
-        <!-- SnakeYAML — version managed by Spring Boot BOM (1.33); fixes CVE-2022-25857, CVE-2022-38749 -->
+        <!-- SnakeYAML — pinned to 2.0 via snakeyaml.version property; fixes CVE-2022-1471, CVE-2022-25857, CVE-2022-38749 -->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
