@@ -7,7 +7,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.3</version>
+        <!-- Upgraded from 2.6.3 to pick up patched transitive deps (Tomcat, Jackson, SnakeYAML, Hibernate Validator, Spring Security) -->
+        <version>2.7.18</version>
         <relativePath/>
     </parent>
 
@@ -19,8 +20,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <!-- Override to vulnerable Log4j version - CVE-2021-44228 (Log4Shell) -->
-        <log4j2.version>2.14.1</log4j2.version>
+        <!-- Log4j managed by Spring Boot 2.7.18 at 2.17.2 — CVE-2021-44228 / CVE-2021-45046 fixed -->
     </properties>
 
     <dependencies>
@@ -34,90 +34,77 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- Explicitly pinned vulnerable Log4j2 - CVE-2021-44228, CVE-2021-45046 -->
+        <!-- Log4j — version managed by Spring Boot BOM (2.17.2); fixes CVE-2021-44228, CVE-2021-45046 -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.14.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.14.1</version>
         </dependency>
 
-        <!-- Old Jackson Databind - CVE-2020-36518, CVE-2021-46877 -->
+        <!-- Jackson — version managed by Spring Boot BOM (2.13.5+); fixes CVE-2020-36518, CVE-2021-46877 -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.12.1</version>
         </dependency>
 
-        <!-- H2 Database - CVE-2022-45868, CVE-2018-10054 -->
+        <!-- H2 2.2.224: fixes CVE-2022-45868, CVE-2018-10054 -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.200</version>
+            <version>2.2.224</version>
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Old Spring Security - CVE-2022-22978, CVE-2022-22976 -->
+        <!-- Spring Security — version managed by Spring Boot BOM (5.7.x); fixes CVE-2022-22978, CVE-2022-22976 -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>5.5.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>5.5.2</version>
         </dependency>
 
-        <!-- Apache Commons Text - CVE-2022-42889 (Text4Shell) -->
+        <!-- Commons Text 1.10.0: fixes CVE-2022-42889 (Text4Shell) -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
-            <version>1.9</version>
+            <version>1.10.0</version>
         </dependency>
 
-        <!-- Apache Commons Collections - CVE-2015-6420 -->
+        <!-- Commons Collections 3.2.2: fixes CVE-2015-6420 -->
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
-            <version>3.2.1</version>
+            <version>3.2.2</version>
         </dependency>
 
-        <!-- Old Tomcat Embed - CVE-2022-25762, CVE-2021-41079 -->
+        <!-- Tomcat — version managed by Spring Boot BOM (9.0.83+); fixes CVE-2022-25762, CVE-2021-41079 -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>9.0.56</version>
         </dependency>
 
-        <!-- Springfox Swagger - multiple CVEs -->
+        <!-- Replaced abandoned springfox (multiple CVEs) with springdoc-openapi 1.7.0 -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.9.2</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.7.0</version>
         </dependency>
 
-        <!-- Old SnakeYAML - CVE-2022-25857, CVE-2022-38749 -->
+        <!-- SnakeYAML — version managed by Spring Boot BOM (1.33); fixes CVE-2022-25857, CVE-2022-38749 -->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.29</version>
         </dependency>
 
-        <!-- Hibernate Validator - CVE-2019-10219 -->
+        <!-- Hibernate Validator — version managed by Spring Boot BOM (6.2.5+); fixes CVE-2019-10219 -->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>6.0.13.Final</version>
         </dependency>
 
         <dependency>
