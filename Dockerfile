@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM maven:3.8.6-openjdk-11 AS builder
+FROM maven:3.9-eclipse-temurin-17-alpine AS builder
 
 WORKDIR /app
 
@@ -9,8 +9,8 @@ RUN mvn dependency:go-offline -B
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Stage 2: Runtime - older JDK on Ubuntu Jammy (carries known CVEs)
-FROM eclipse-temurin:11-jre-jammy
+# Stage 2: Runtime
+FROM eclipse-temurin:17-jre-alpine
 
 LABEL maintainer="exam-platform@example.com"
 LABEL service="physics-service"
@@ -18,9 +18,7 @@ LABEL version="1.0.0"
 
 WORKDIR /app
 
-RUN apt-get update && \
-    apt-get install -y curl wget net-tools && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache curl wget net-tools
 
 COPY --from=builder /app/target/physics-service-1.0.0.jar app.jar
 
