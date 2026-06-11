@@ -18,7 +18,7 @@ LABEL version="1.0.0"
 
 WORKDIR /app
 
-RUN apk add --no-cache curl wget net-tools
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 COPY --from=builder /app/target/physics-service-1.0.0.jar app.jar
 
@@ -27,7 +27,9 @@ EXPOSE 8081
 ENV JAVA_OPTS="-Xms256m -Xmx512m"
 ENV SPRING_PROFILES_ACTIVE=default
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD curl -f http://localhost:8081/api/physics/health || exit 1
+USER appuser
 
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD wget -qO- http://localhost:8081/api/physics/health >/dev/null || exit 1
+
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]
