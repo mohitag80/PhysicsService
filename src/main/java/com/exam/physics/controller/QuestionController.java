@@ -2,9 +2,9 @@ package com.exam.physics.controller;
 
 import com.exam.physics.model.Question;
 import com.exam.physics.service.QuestionService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/physics")
-@Api(value = "Physics Questions API", description = "Endpoints for Physics exam questions (Grade 9-12)")
+@Tag(name = "Physics Questions API", description = "Endpoints for Physics exam questions (Grade 9-12)")
 @CrossOrigin(origins = "*")
 public class QuestionController {
 
@@ -27,7 +27,7 @@ public class QuestionController {
     private QuestionService questionService;
 
     @GetMapping("/health")
-    @ApiOperation(value = "Health check endpoint")
+    @Operation(summary = "Health check endpoint")
     public ResponseEntity<Map<String, String>> health() {
         Map<String, String> status = new HashMap<>();
         status.put("service", "physics-service");
@@ -37,11 +37,11 @@ public class QuestionController {
     }
 
     @GetMapping("/questions/grade/{grade}/top/{n}")
-    @ApiOperation(value = "Get top N questions for a specific grade",
-                  notes = "Returns the top N physics questions for the given grade level (9-12)")
+    @Operation(summary = "Get top N questions for a specific grade",
+               description = "Returns the top N physics questions for the given grade level (9-12)")
     public ResponseEntity<List<Question>> getTopQuestionsByGrade(
-            @ApiParam(value = "Grade level (9-12)", required = true) @PathVariable int grade,
-            @ApiParam(value = "Number of questions to return", required = true) @PathVariable int n) {
+            @Parameter(description = "Grade level (9-12)", required = true) @PathVariable int grade,
+            @Parameter(description = "Number of questions to return", required = true) @PathVariable int n) {
 
         logger.info("Request: top {} questions for grade {}", n, grade);
 
@@ -56,12 +56,12 @@ public class QuestionController {
     }
 
     @GetMapping("/questions/topic/{topic}/count/{n}")
-    @ApiOperation(value = "Get N questions for a specific topic",
-                  notes = "Returns N physics questions for the selected topic")
+    @Operation(summary = "Get N questions for a specific topic",
+               description = "Returns N physics questions for the selected topic")
     public ResponseEntity<List<Question>> getQuestionsByTopic(
-            @ApiParam(value = "Topic name e.g. Mechanics, Optics, Electricity", required = true)
+            @Parameter(description = "Topic name e.g. Mechanics, Optics, Electricity", required = true)
             @PathVariable String topic,
-            @ApiParam(value = "Number of questions to return", required = true) @PathVariable int n) {
+            @Parameter(description = "Number of questions to return", required = true) @PathVariable int n) {
 
         logger.info("Request: {} questions for topic '{}'", n, topic);
         List<Question> questions = questionService.getQuestionsByTopic(topic, n);
@@ -69,12 +69,12 @@ public class QuestionController {
     }
 
     @GetMapping("/questions/complexity/{complexity}/count/{n}")
-    @ApiOperation(value = "Get N questions by complexity level",
-                  notes = "Returns N questions filtered by complexity: easy, medium, or hard")
+    @Operation(summary = "Get N questions by complexity level",
+               description = "Returns N questions filtered by complexity: easy, medium, or hard")
     public ResponseEntity<List<Question>> getQuestionsByComplexity(
-            @ApiParam(value = "Complexity level: easy, medium, hard", required = true)
+            @Parameter(description = "Complexity level: easy, medium, hard", required = true)
             @PathVariable String complexity,
-            @ApiParam(value = "Number of questions to return", required = true) @PathVariable int n) {
+            @Parameter(description = "Number of questions to return", required = true) @PathVariable int n) {
 
         logger.info("Request: {} questions with complexity '{}'", n, complexity);
 
@@ -89,7 +89,7 @@ public class QuestionController {
     }
 
     @GetMapping("/questions/grade/{grade}/topic/{topic}/count/{n}")
-    @ApiOperation(value = "Get N questions by grade and topic")
+    @Operation(summary = "Get N questions by grade and topic")
     public ResponseEntity<List<Question>> getQuestionsByGradeAndTopic(
             @PathVariable int grade,
             @PathVariable String topic,
@@ -101,7 +101,7 @@ public class QuestionController {
     }
 
     @GetMapping("/topics")
-    @ApiOperation(value = "Get all available physics topics")
+    @Operation(summary = "Get all available physics topics")
     public ResponseEntity<List<String>> getAvailableTopics() {
         return ResponseEntity.ok(questionService.getAvailableTopics());
     }

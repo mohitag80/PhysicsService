@@ -1,6 +1,6 @@
 package com.exam.physics.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Arrays;
 
 @Entity
